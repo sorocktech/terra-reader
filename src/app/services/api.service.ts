@@ -14,7 +14,7 @@ export class ApiService {
 
   private heroesUrl = 'http://localhost:8000/api';  // URL to web api
 
-  token = 'NTk3NTBkNDUyYmE2OTdkYzllMjVmNGYzNWQzNDkxZGNmY2JiMjgwYTllZWNjMDI4OGI2NjFkZTM1YmU0ZTE0OA'
+  token = 'OGM3OTFlOTRkYjczZWUwYzdkMzI2M2Y4NjZkNzE1ZWMwYjQ4ZTBlZWE1MGY2ZTE4MmZlYjAyZTFhZjkyYzkxMQ'
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json','Authorization':`Bearer ${this.token}` })
   };
@@ -48,11 +48,11 @@ export class ApiService {
   }
 
   /** GET hero by id. Will 404 if id not found */
-  getHero(id: number): Observable<Hero> {
-    const url = `${this.heroesUrl}/${id}`;
-    return this.http.get<Hero>(url).pipe(
+  getEntry(id: number): Observable<entries> {
+    const url = `${this.heroesUrl}/entries/${id}`;
+    return this.http.get<entries>(url,this.httpOptions).pipe(
       tap(_ => this.log(`fetched hero id=${id}`)),
-      catchError(this.handleError<Hero>(`getHero id=${id}`))
+      catchError(this.handleError<entries>(`getHero id=${id}`))
     );
   }
 
