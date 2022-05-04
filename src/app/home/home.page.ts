@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
 import { DataService, Message } from '../services/data.service';
 
 @Component({
@@ -6,8 +7,13 @@ import { DataService, Message } from '../services/data.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  constructor(private data: DataService) {}
+export class HomePage implements OnInit  {
+
+  heroes: any = [];
+  constructor(
+    private data: DataService,
+    private messageService:ApiService
+    ) {}
 
   refresh(ev) {
     setTimeout(() => {
@@ -19,4 +25,12 @@ export class HomePage {
     return this.data.getMessages();
   }
 
+
+  ngOnInit() {
+    this.getHeroes()
+  }
+  getHeroes(): void {
+    this.messageService.getHeroes()
+    .subscribe(heroes => this.heroes = heroes._embedded.items);
+  }
 }

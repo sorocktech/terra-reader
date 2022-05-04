@@ -4,17 +4,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Hero } from './hero';
-import { LogService } from './log.service';
+import { Hero } from '../message/hero';
+import { LogService } from '../message/log.service';
+import { entries } from './app';
 
 
 @Injectable({ providedIn: 'root' })
-export class MessageService {
+export class ApiService {
 
-  private heroesUrl = 'api/heroes';  // URL to web api
+  private heroesUrl = 'http://localhost:8000/api';  // URL to web api
 
+  token = 'NTk3NTBkNDUyYmE2OTdkYzllMjVmNGYzNWQzNDkxZGNmY2JiMjgwYTllZWNjMDI4OGI2NjFkZTM1YmU0ZTE0OA'
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json','Authorization':`Bearer ${this.token}` })
   };
 
   constructor(
@@ -23,11 +25,11 @@ export class MessageService {
     ) { }
 
   /** GET heroes from the server */
-  getHeroes(): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl)
+  getHeroes(): any {
+    return this.http.get(`${this.heroesUrl}/entries.json`,this.httpOptions)
       .pipe(
         tap(_ => this.log('fetched heroes')),
-        catchError(this.handleError<Hero[]>('getHeroes', []))
+        catchError(this.handleError('getHeroes', []))
       );
   }
 
